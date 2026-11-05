@@ -59,7 +59,11 @@ export class WalkControls {
       this._ptr = e.pointerId;
       this._start = { x: e.clientX, y: e.clientY, t: performance.now() };
       this._last = { x: e.clientX, y: e.clientY };
-      el.setPointerCapture(e.pointerId);
+      try {
+        el.setPointerCapture(e.pointerId);
+      } catch {
+        /* 个别浏览器/模拟事件不支持捕获，忽略 */
+      }
     });
 
     el.addEventListener('pointermove', (e) => {

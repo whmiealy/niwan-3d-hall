@@ -26,7 +26,7 @@ export const CONFIG = {
   /** 人的碰撞半径（米） */
   PLAYER_RADIUS: 0.3,
   /** 出生点（世界坐标）和初始朝向（弧度，0 = 朝北，-π/2 = 朝东） */
-  SPAWN: { x: -9.4, z: -4.3, yaw: -1.75 },
+  SPAWN: { x: -5.6, z: -4.4, yaw: -1.75 },
 
   /** 手机上的最大像素比（越大越清晰也越卡） */
   MAX_PIXEL_RATIO_MOBILE: 1.5,
