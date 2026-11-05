@@ -44,3 +44,6 @@ body.touch #hint .desk { display: none; }
 .viewer-desc { padding: 12px 16px 2px; font-size: 14px; line-height: 1.6; }
 .viewer-tip { padding: 4px 16px 14px; font-size: 12px; color: #9a8670; }
 body.touch #hint { white-space: normal; text-align: center; width: max-content; line-height: 1.5; }
+#version { position: fixed; right: max(10px, env(safe-area-inset-right)); bottom: max(8px, env(safe-area-inset-bottom));
+  font-size: 11px; color: rgba(255,255,255,.85); background: rgba(30,22,15,.45); padding: 2px 8px; border-radius: 8px;
+  pointer-events: none; z-index: 4; }

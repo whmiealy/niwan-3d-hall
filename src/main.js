@@ -106,6 +106,9 @@ createHall(renderer)
     loading.textContent = '展厅加载失败：' + err.message;
   });
 
+// 右下角版本号：确认看到的是不是最新部署
+document.getElementById('version').textContent = __BUILD_INFO__;
+
 // 提示条几秒后淡出
 setTimeout(() => document.getElementById('hint')?.classList.add('fade'), 6000);
 
