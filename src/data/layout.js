@@ -45,12 +45,13 @@ export const COLORS = {
 };
 
 // ---------------- 西北角：入口平台 + 沿北墙的楼梯 ----------------
-// 平台高约 1.35m，入口门开在西墙；楼梯沿北墙从平台往东下到大厅
-export const PLATFORM = { x0: 0, x1: 3.2, y0: 0, y1: 2.6, h: 1.35 };
-export const DOOR = { y0: 0.7, y1: 1.9, h: 2.1 }; // 西墙上，平台高度起算
+// 平台高约 1.2m（8 级 × 15cm），入口门开在西墙、紧贴西北角；楼梯沿北墙从平台往东下到大厅
+// （第三版：按 4K 原帧量出的门宽 1.2m 反推比例校正）
+export const PLATFORM = { x0: 0, x1: 3.2, y0: 0, y1: 3.2, h: 1.2, ceiling: 4.6 };
+export const DOOR = { y0: 0.15, y1: 1.35, h: 2.1 }; // 西墙上，平台高度起算
 export const FLIGHT = { x0: 3.2, x1: 6.4, y0: 0, y1: 1.4, steps: 8 }; // 最高一级在西
-export const PHOTO_COLLAGE = { x0: 3.0, x1: 7.0, h0: 1.6, h1: 2.9 }; // 楼梯上方北墙照片墙
-export const CLERESTORY = { x0: 2.0, x1: 6.6, h0: 3.0, h1: 3.6 }; // 北墙高侧窗
+export const PHOTO_COLLAGE = { x0: 2.7, x1: 7.0, h0: 0.95, h1: 2.95 }; // 楼梯上方北墙照片墙
+export const CLERESTORY = { x0: 2.0, x1: 6.4, h0: 3.1, h1: 3.7 }; // 北墙高侧窗
 
 // 南墙窗（中心 x），宽 2.4，窗台 0.9，窗顶 2.9
 export const SOUTH_WINDOWS = [4, 10, 17, 23].map((c) => ({ x0: c - 1.2, x1: c + 1.2, h0: 0.9, h1: 2.9 }));
@@ -68,9 +69,9 @@ export const PILASTERS = [
 ];
 
 // ---------------- 北墙展线 ----------------
-export const PREFACE = { x0: 6.6, x1: 9.0 }; // 前言墙（下方泥塑浮雕台）
+export const PREFACE = { x0: 7.2, x1: 8.8 }; // 前言墙（1.6m 宽，底部是印刷的老艺人照片，不是实物浮雕）
 export const PORTRAITS = [
-  { name: '王蓝田', side: 'N', a0: 9.0, a1: 9.9 },
+  { name: '王蓝田', side: 'N', a0: 8.9, a1: 9.9 },
   { name: '王学锋', side: 'N', a0: 19.5, a1: 20.1 },
   { name: '王宝瑞', side: 'E', a0: 10.3, a1: 11.1 },
 ];
