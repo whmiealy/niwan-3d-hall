@@ -9,3 +9,5 @@ frames2
 .DS_Store
 .claude
 frames3
+frames_dense
+compare_raw
