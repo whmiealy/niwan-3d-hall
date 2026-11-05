@@ -1,0 +1,10 @@
+node_modules
+dist
+frames
+*.MOV
+*.mov
+*.MP4
+*.mp4
+frames2
+.DS_Store
+.claude

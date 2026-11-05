@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#2b2118" />
+    <title>泥玩世家 · 3D 展厅</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <div id="loading">展厅加载中…</div>
+
+    <div id="hint">
+      <span class="desk">拖动鼠标看四周 · WASD 移动 · 点地面走过去 · 点击发光方块查看展品</span>
+      <span class="mobile">拖动看四周 · 摇杆移动 · 点地面走过去 · 点发光方块看展品</span>
+    </div>
+
+    <!-- 展品查看面板 -->
+    <div id="viewer" aria-modal="true" role="dialog">
+      <div class="viewer-card">
+        <header>
+          <span class="viewer-id"></span>
+          <div class="viewer-title">
+            <h2 class="viewer-name"></h2>
+            <span class="viewer-cat"></span>
+          </div>
+          <button class="viewer-close" aria-label="关闭">×</button>
+        </header>
+        <div class="viewer-canvas"><span class="viewer-status"></span></div>
+        <p class="viewer-desc"></p>
+        <p class="viewer-tip">拖动旋转 · 滚轮/双指缩放</p>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
