@@ -99,6 +99,7 @@ const loading = document.getElementById('loading');
 createHall(renderer)
   .then((hall) => {
     scene.add(hall.root);
+    window.__app.hall = hall;
     loading.classList.add('hide');
   })
   .catch((err) => {
@@ -130,4 +131,42 @@ renderer.setAnimationLoop(() => {
 });
 
 // 调试用：在控制台里可以访问 window.__app
-window.__app = { scene, camera, controls, exhibits, viewer };
+window.__app = { scene, camera, controls, exhibits, viewer, renderer };
+
+/**
+ * 导出整个展厅（外壳 + 展品占位）为 .glb，返回 Blob。
+ * 只在调用时才加载导出器，不影响正常访问的加载速度。
+ */
+window.__app.exportGLB = async () => {
+  const { GLTFExporter } = await import('three/addons/exporters/GLTFExporter.js');
+  const group = new THREE.Group();
+  group.name = '泥玩世家展厅';
+  const hall = window.__app.hall.root;
+  const parts = [hall, exhibits.root];
+  parts.forEach((p) => group.add(p));
+  try {
+    const buf = await new GLTFExporter().parseAsync(group, { binary: true, maxTextureSize: 2048 });
+    return new Blob([buf], { type: 'model/gltf-binary' });
+  } finally {
+    parts.forEach((p) => scene.add(p)); // 放回场景
+  }
+};
+
+/** 按指定相机位置/朝向渲染一张截图，返回 JPEG Blob（宽 w、高 h） */
+window.__app.snapshot = (pos, target, w = 1600, h = 900, fov = 62) => {
+  const cam = new THREE.PerspectiveCamera(fov, w / h, 0.05, 120);
+  cam.position.set(...pos);
+  cam.lookAt(...target);
+  const prevSize = renderer.getSize(new THREE.Vector2());
+  const prevPR = renderer.getPixelRatio();
+  renderer.setPixelRatio(1);
+  renderer.setSize(w, h, false);
+  renderer.render(scene, cam);
+  return new Promise((res) =>
+    renderer.domElement.toBlob((b) => {
+      renderer.setPixelRatio(prevPR);
+      renderer.setSize(prevSize.x, prevSize.y, false);
+      res(b);
+    }, 'image/jpeg', 0.9)
+  );
+};
