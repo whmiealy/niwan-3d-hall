@@ -14,6 +14,7 @@ import { ExhibitLayer } from './exhibits/ExhibitLayer.js';
 import { WalkControls, createJoystick } from './controls/WalkControls.js';
 import { ExhibitViewer } from './viewer/ExhibitViewer.js';
 import exhibitData from './data/exhibits.json';
+import { applyLinkedItems, LIBRARY_URL } from './data/linkedItems.js';
 import './style.css';
 
 const isTouch = matchMedia('(pointer: coarse)').matches;
@@ -96,7 +97,7 @@ document.body.classList.toggle('touch', isTouch);
 
 // ---------- 加载展厅外壳 ----------
 const loading = document.getElementById('loading');
-createHall(renderer)
+const hallReady = createHall(renderer)
   .then((hall) => {
     scene.add(hall.root);
     window.__app.hall = hall;
@@ -106,6 +107,19 @@ createHall(renderer)
     console.error(err);
     loading.textContent = '展厅加载失败：' + err.message;
   });
+
+// ---------- 接入资源库：真实物品 + 返回入口 + #exhibit=C1 直达 ----------
+// 等展厅加载完再打开直达的展品，否则加载提示会盖住查看器
+Promise.all([applyLinkedItems(exhibitData.exhibits), hallReady]).then(([inLibrary]) => {
+  if (inLibrary) {
+    const back = document.getElementById('back-library');
+    back.href = LIBRARY_URL;
+    back.hidden = false;
+  }
+  const id = new URLSearchParams(location.hash.slice(1)).get('exhibit');
+  const ex = exhibitData.exhibits.find((e) => e.id === id);
+  if (ex) viewer.open(ex);
+});
 
 // 右下角版本号：确认看到的是不是最新部署
 document.getElementById('version').textContent = __BUILD_INFO__;

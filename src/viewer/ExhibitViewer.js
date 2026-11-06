@@ -79,6 +79,9 @@ export class ExhibitViewer {
     this.el.querySelector('.viewer-name').textContent = ex.name;
     this.el.querySelector('.viewer-cat').textContent = ex.category;
     this.el.querySelector('.viewer-desc').textContent = ex.description || '';
+    const more = this.el.querySelector('.viewer-more');
+    more.hidden = !ex.itemId;
+    if (ex.itemId) more.href = `../#/item/${encodeURIComponent(ex.itemId)}`;
     this.onOpen?.();
     this._resize();
 
@@ -102,7 +105,7 @@ export class ExhibitViewer {
         obj = this._placeholder(ex);
       }
     } else {
-      status.textContent = '占位模型（以后替换为真实展品）';
+      status.textContent = ex.itemId ? '这件物品暂无三维模型，可查看完整资料' : '占位模型（以后替换为真实展品）';
       obj = this._placeholder(ex);
     }
     if (token !== this._token || !this.isOpen) return;
@@ -115,8 +118,11 @@ export class ExhibitViewer {
 
   async _loadGLTF(url) {
     if (!this._loader) {
-      const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
-      this._loader = new GLTFLoader();
+      const [{ GLTFLoader }, { MeshoptDecoder }] = await Promise.all([
+        import('three/addons/loaders/GLTFLoader.js'),
+        import('three/addons/libs/meshopt_decoder.module.js'), // 资源库的模型用 meshopt 压缩
+      ]);
+      this._loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
     }
     const gltf = await this._loader.loadAsync(url);
     return gltf.scene;

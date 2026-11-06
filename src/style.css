@@ -47,3 +47,7 @@ body.touch #hint { white-space: normal; text-align: center; width: max-content; 
 #version { position: fixed; right: max(10px, env(safe-area-inset-right)); bottom: max(8px, env(safe-area-inset-bottom));
   font-size: 11px; color: rgba(255,255,255,.85); background: rgba(30,22,15,.45); padding: 2px 8px; border-radius: 8px;
   pointer-events: none; z-index: 4; }
+#back-library { position: fixed; left: max(12px, env(safe-area-inset-left)); top: max(12px, env(safe-area-inset-top)); z-index: 5; padding: 6px 12px; border-radius: 16px; background: rgba(43, 33, 24, .72); color: #fff; font-size: 13px; text-decoration: none; }
+#back-library[hidden], .viewer-more[hidden] { display: none; }
+.viewer-more { display: block; padding: 2px 16px 4px; font-size: 14px; color: #a85a2c; text-decoration: none; }
+body.touch #back-library { top: calc(max(14px, env(safe-area-inset-top)) + 62px); } /* 手机上提示条有两行，避开它 */
