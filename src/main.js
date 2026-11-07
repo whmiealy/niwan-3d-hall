@@ -14,7 +14,7 @@ import { ExhibitLayer } from './exhibits/ExhibitLayer.js';
 import { WalkControls, createJoystick } from './controls/WalkControls.js';
 import { ExhibitViewer } from './viewer/ExhibitViewer.js';
 import exhibitData from './data/exhibits.json';
-import { applyLinkedItems, LIBRARY_URL } from './data/linkedItems.js';
+import { loadPlacements, LIBRARY_URL } from './data/linkedItems.js';
 import './style.css';
 
 const isTouch = matchMedia('(pointer: coarse)').matches;
@@ -108,16 +108,19 @@ const hallReady = createHall(renderer)
     loading.textContent = '展厅加载失败：' + err.message;
   });
 
-// ---------- 接入资源库：真实物品 + 返回入口 + #exhibit=C1 直达 ----------
-// 等展厅加载完再打开直达的展品，否则加载提示会盖住查看器
-Promise.all([applyLinkedItems(exhibitData.exhibits), hallReady]).then(([inLibrary]) => {
-  if (inLibrary) {
+// ---------- 接入资源库：把真实物品摆进展厅，#item=编号 直达，#exhibit=C1 打开展位 ----------
+// 等展厅加载完再处理直达，否则加载提示会盖住查看器
+Promise.all([loadPlacements(exhibitData.exhibits), hallReady]).then(([placements]) => {
+  if (placements) {
     const back = document.getElementById('back-library');
     back.href = LIBRARY_URL;
     back.hidden = false;
+    exhibits.placeItems(placements);
   }
-  const id = new URLSearchParams(location.hash.slice(1)).get('exhibit');
-  const ex = exhibitData.exhibits.find((e) => e.id === id);
+  const hash = new URLSearchParams(location.hash.slice(1));
+  const spot = hash.get('item') && exhibits.locate(hash.get('item'));
+  if (spot) controls.lookAt(spot.stand, spot.target);
+  const ex = exhibitData.exhibits.find((e) => e.id === hash.get('exhibit'));
   if (ex) viewer.open(ex);
 });
 
@@ -140,7 +143,7 @@ renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.05);
   if (paused) return; // 查看器打开时主场景不渲染
   controls.update(dt);
-  exhibits.update(dt);
+  exhibits.update(dt, camera.position);
   renderer.render(scene, camera);
 });
 

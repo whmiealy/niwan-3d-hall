@@ -1,5 +1,6 @@
-# 每次推送到 main 分支，自动构建并发布到 GitHub Pages（公网地址同步更新）
-name: Deploy to GitHub Pages
+# 展馆已并入资源库网站：https://whmiealy.github.io/museum3d/hall/
+# 这里只发布一个跳转页，让旧链接和旧二维码继续可用。展馆的实际发布见 docs/交接说明.md。
+name: Deploy redirect to GitHub Pages
 on:
   push:
     branches: [main]
@@ -15,16 +16,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm run build
+      - run: |
+          mkdir site
+          cat > site/index.html <<'HTML'
+          <!doctype html>
+          <html lang="zh-CN">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <title>泥玩世家 · 3D 展厅</title>
+              <meta http-equiv="refresh" content="0; url=https://whmiealy.github.io/museum3d/hall/" />
+              <script>location.replace('https://whmiealy.github.io/museum3d/hall/' + location.hash);</script>
+            </head>
+            <body>
+              <p>展厅已搬家：<a href="https://whmiealy.github.io/museum3d/hall/">点这里进入</a></p>
+            </body>
+          </html>
+          HTML
+          cp site/index.html site/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: site
   deploy:
     needs: build
     runs-on: ubuntu-latest

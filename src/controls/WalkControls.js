@@ -193,6 +193,15 @@ export class WalkControls {
     this._apply();
   }
 
+  /** 走到 stand（世界坐标）并面向 target */
+  lookAt(stand, target) {
+    this.pos.x = stand.x;
+    this.pos.z = stand.z;
+    this.yaw = Math.atan2(stand.x - target.x, stand.z - target.z);
+    this.target = null;
+    this._apply();
+  }
+
   _apply() {
     this.camera.position.copy(this.pos);
     this.camera.rotation.set(this.pitch, this.yaw, 0);

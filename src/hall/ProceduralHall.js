@@ -312,8 +312,7 @@ export function createProceduralHall() {
     box('led', c.x0 + 0.06, c.x1 - 0.06, c.y0 + 0.02, c.y0 + 0.05, 0.8, 1.04);
     box('glass', c.x0 + 0.02, c.x1 - 0.02, c.y0, c.y1, 0.805, 1.05);
     box('metal', c.x0 + 0.02, c.x1 - 0.02, c.y1 - 0.015, c.y1, 1.03, 1.05);
-    // 柜内小泥塑 + 白色说明卡
-    scatter(fig, 40 + i, c.x0 + 0.2, c.x1 - 0.2, c.y0 + 0.2, c.y1 - 0.15, 0.805, 6, { shapes: ['animal', 'bottle'], size: [0.06, 0.11] });
+    // 柜内泥塑由 ExhibitLayer 摆真实模型；这里只留白色说明卡
     for (let k = 0; k < 3; k++) fig.add('card', c.x0 + 0.35 + k * 0.6, c.y1 - 0.12, 0.805, [0.08, 0.06, 0.08], 0xffffff);
   });
 
@@ -333,13 +332,10 @@ export function createProceduralHall() {
     box('caseFloor', c.x0 + 0.02, c.x1 - 0.02, c.y0 + 0.06, c.y1 - 0.06, 0.9, 0.905);
     box('glass', c.x0, c.x0 + 0.02, c.y0 + 0.06, c.y1 - 0.06, 0.9, 2.3);
     box('glass', c.x0 + 0.05, c.x1 - 0.05, c.y0 + 0.06, c.y1 - 0.06, 1.55, 1.57);
-    box('white', c.x0 + 0.25, c.x1 - 0.08, c.y0 + 0.2, c.y0 + 0.9, 0.905, 1.0); // 底层小台阶
+    box('white', c.x0 + 0.25, c.x1 - 0.08, c.y0 + 0.12, c.y1 - 0.12, 0.905, 1.0); // 底层小台阶（后排物品站在上面）
     facePlane(texMat(exhibitWallTexture(20 + i)), 'E', c.y0 + 0.06, c.y1 - 0.06, c.x1 - 0.01, 1.57, 2.3);
     facePlane(texMat(graphicWallTexture(30 + i, 3)), 'E', c.y0 + 0.06, c.y1 - 0.06, c.x1 - 0.01, 0.9, 1.55);
-    // 两层泥咕咕：底层一排、玻璃隔板上一排
-    rowOfBottles(fig, 80 + i, c.x0 + 0.3, c.y0 + 0.25, c.x0 + 0.3, c.y1 - 0.25, 1.0, 7, 0.17);
-    rowOfBottles(fig, 90 + i, c.x0 + 0.3, c.y0 + 0.3, c.x0 + 0.3, c.y1 - 0.3, 1.57, 6, 0.15);
-    scatter(fig, 95 + i, c.x0 + 0.1, c.x0 + 0.2, c.y0 + 0.2, c.y1 - 0.2, 0.905, 4, { shapes: ['animal'], size: [0.08, 0.12] });
+    // 柜内泥塑由 ExhibitLayer 摆真实模型
   });
   box('marble', 25.4, W, CALLIGRAPHY_E.y0, CALLIGRAPHY_E.y1, 0, 2.6);
   facePlane(texMat(calligraphyTexture('王宝瑞')), 'E', CALLIGRAPHY_E.y0 + 0.2, CALLIGRAPHY_E.y1 - 0.2, 25.39, 0.6, 2.4);
